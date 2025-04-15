@@ -1,19 +1,24 @@
 // placeApi에서 찜하기 API 함수 불러옴
-import { likePlace } from "../api/placeApi";
+import { likePlace, getMyPlaces } from "../api/placeApi";
 
 // 개별 맛집 정보를 카드 형태로 렌더링하는 컴포넌트
 // props: place (맛집 정보 객체), onDelete (삭제 함수 - 선택적)
-function PlaceCard({ place, onDelete }) {
+function PlaceCard({ place, onDelete, setMyPlaces }) {
   // ❤️ 찜 버튼 클릭 시 실행되는 함수
   const handleLike = async (place) => {
     try {
-      await likePlace(place); // ✅ 백엔드 저장
+      console.log("📦 likePlace로 보낼 데이터:", place); // 🔍 확인 포인트 ①
+
+      await likePlace(place); // 서버로 place 객체 전송
+
       alert("맛집을 찜했어요! 💖");
 
-      const res = await getMyPlaces(); // ✅ 최신 목록 다시 불러오기
+      const res = await getMyPlaces();
+      console.log("📥 getMyPlaces 응답:", res.data); // 🔍 확인 포인트 ②
+
       setMyPlaces(res.data?.places || []);
     } catch (error) {
-      console.error("찜 저장 실패:", error);
+      console.error("찜 저장 실패:", error); // 🔍 확인 포인트 ③
       alert("찜하는 데 문제가 생겼어요. 😢");
     }
   };

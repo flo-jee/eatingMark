@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"; // React의 훅들 불러오기
 import { getAllPlaces } from "../api/placeApi"; // 전체 맛집 목록을 가져오는 API 함수
 import PlaceCard from "../components/PlaceCard"; // 맛집 정보를 렌더링할 카드 컴포넌트
+import { sortPlacesByDistance } from "../utils/loc"; // 정렬 함수 불러오기
 
 function MainPage() {
-  const [places, setPlaces] = useState([]); // 맛집 데이터를 저장할 상태
+  const [myPlaces, setMyPlaces] = useState([]); // 맛집 데이터를 저장할 상태
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 에러처리
 
@@ -13,8 +14,22 @@ function MainPage() {
       try {
         setLoading(true); // 로딩 시작
         setError(null); // 에러 초기화
+
         const res = await getAllPlaces(); // 서버에서 전체 맛집 데이터 요청
-        setPlaces(res.data.places); // 응답에서 맛집 리스트만 추출하여 상태에 저장
+        let rawPlaces = res.data.places; // 응답에서 맛집 리스트만 추출하여 상태에 저장
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const sorted = sortPlacesByDistance(rawPlaces, latitude, longitude);
+            setMyPlaces(sorted);
+            console.log("위치 받아옴");
+          },
+          (geoError) => {
+            console.warn("📍 위치를 불러오지 못했어요:", geoError);
+            setMyPlaces(rawPlaces); // 위치 불러오기 실패 시 정렬 없이 출력
+          },
+        );
       } catch (err) {
         console.error("📛 전체 맛집 데이터 불러오기 실패:", err); // 에러 발생 시 콘솔에 메시지 출력
         // 에러 상태 코드에 따른 메시지 설정
@@ -53,8 +68,14 @@ function MainPage() {
         </p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
-          {Array.isArray(places) && places.length > 0 ? (
-            places.map((place) => <PlaceCard key={place.id} place={place} />)
+          {Array.isArray(myPlaces) && myPlaces.length > 0 ? (
+            myPlaces.map((place) => (
+              <PlaceCard
+                key={place.id}
+                place={place}
+                setMyPlaces={setMyPlaces}
+              />
+            ))
           ) : (
             <p className="text-gray-500 col-span-full text-center">
               불러올 맛집이 없습니다. 😢
