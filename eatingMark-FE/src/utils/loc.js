@@ -17,17 +17,12 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   return d;
 }
 
-// 🔥 가까운 순으로 정렬!
 export function sortPlacesByDistance(places, lat, lon) {
-  if (!Array.isArray(places)) {
-    console.warn("❗️정렬할 place 리스트가 배열이 아닙니다:", places);
-    return []; // 배열이 아니면 빈 배열 반환
-  }
-  const sorted = [...places];
-  sorted.sort((a, b) => {
-    const distA = calculateDistance(lat, lon, a.lat, a.lon);
-    const distB = calculateDistance(lat, lon, b.lat, b.lon);
-    return distA - distB;
+  const sortedPlaces = [...places];
+  sortedPlaces.sort((a, b) => {
+    const distanceA = calculateDistance(lat, lon, a.lat, a.lon);
+    const distanceB = calculateDistance(lat, lon, b.lat, b.lon);
+    return distanceA - distanceB;
   });
-  return sorted;
+  return sortedPlaces;
 }
