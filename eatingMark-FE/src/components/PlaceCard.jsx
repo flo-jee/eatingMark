@@ -1,4 +1,4 @@
-import { likePlace } from "../../api/placeApi";
+import { likePlace } from "../api/placeApi";
 
 function PlaceCard({ place }) {
   const handleLike = async () => {

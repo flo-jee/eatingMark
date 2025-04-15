@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllPlaces } from "../api/placeApi";
-import PlaceCard from "../components/place/PlaceCard";
+import PlaceCard from "../components/PlaceCard";
 
 function MainPage() {
   const [places, setPlaces] = useState([]);
