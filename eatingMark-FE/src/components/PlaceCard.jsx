@@ -1,3 +1,5 @@
+import { likePlace } from "../api/placeApi";
+
 function PlaceCard({ place, onDelete }) {
   const handleLike = async () => {
     try {
