@@ -3,7 +3,7 @@ import axios from "axios"; // axios 라이브러리를 불러옴
 // axiosInstance는 공통된 설정을 가진 Axios 인스턴스로,
 // 모든 API 요청에 대해 baseURL, headers, timeout을 반복 설정하지 않아도 됨
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000", // API 기본 주소를 설정 (환경변수에서 가져오며, 없으면 localhost를 기본값으로 사용)
+  baseURL: import.meta.env.VITE_API_BASE_URL, // API 기본 주소를 설정
   headers: {
     // 모든 요청에 대해 JSON 형식 사용을 명시
     "Content-Type": "application/json",
