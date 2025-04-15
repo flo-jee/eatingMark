@@ -9,3 +9,6 @@ export const getMyPlaces = () => axiosInstance.get("/users/places");
 // 찜하기
 export const likePlace = (place) =>
   axiosInstance.post("/users/places", { place });
+
+// 찜 삭제
+export const deletePlace = (id) => axiosInstance.delete(`/users/places/${id}`);

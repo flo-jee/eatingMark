@@ -1,6 +1,6 @@
 import { likePlace } from "../api/placeApi";
 
-function PlaceCard({ place }) {
+function PlaceCard({ place, onDelete }) {
   const handleLike = async () => {
     try {
       await likePlace(place);
@@ -22,12 +22,22 @@ function PlaceCard({ place }) {
       />
       <h3 className="font-semibold">{title}</h3>
       <p className="text-sm text-gray-600 mt-1">{description}</p>
-      <button
-        onClick={handleLike}
-        className="mt-2 px-3 py-1 bg-yellow-400 text-white text-sm rounded hover:bg-yellow-500 transition"
-      >
-        ❤️ 찜하기
-      </button>
+
+      {onDelete ? (
+        <button
+          onClick={() => onDelete(place.id)}
+          className="mt-2 px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition"
+        >
+          🗑️ 삭제하기
+        </button>
+      ) : (
+        <button
+          onClick={handleLike}
+          className="mt-2 px-3 py-1 bg-yellow-400 text-white text-sm rounded hover:bg-yellow-500 transition"
+        >
+          ❤️ 찜하기
+        </button>
+      )}
     </div>
   );
 }
