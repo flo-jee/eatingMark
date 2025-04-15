@@ -5,22 +5,16 @@ import { likePlace } from "../api/placeApi";
 // props: place (맛집 정보 객체), onDelete (삭제 함수 - 선택적)
 function PlaceCard({ place, onDelete }) {
   // ❤️ 찜 버튼 클릭 시 실행되는 함수
-  const handleLike = async () => {
+  const handleLike = async (place) => {
     try {
-      // 서버에 place 데이터를 보내 찜하기 요청
-      await likePlace(place);
+      await likePlace(place); // ✅ 백엔드 저장
+      alert("맛집을 찜했어요! 💖");
 
-      // 방금 찜한 맛집 정보를 localStorage에 저장
-      localStorage.setItem("latestLiked", JSON.stringify(place));
-
-      // 사용자에게 피드백 메시지 표시
-      alert("찜 완료!");
-
-      // 찜 목록 페이지로 리다이렉트
-      window.location.href = "/my-places";
+      const res = await getMyPlaces(); // ✅ 최신 목록 다시 불러오기
+      setMyPlaces(res.data?.places || []);
     } catch (error) {
-      // 오류 발생 시 콘솔에 출력
-      console.error("찜하기 실패:", error);
+      console.error("찜 저장 실패:", error);
+      alert("찜하는 데 문제가 생겼어요. 😢");
     }
   };
 
@@ -51,7 +45,7 @@ function PlaceCard({ place, onDelete }) {
       ) : (
         // ❤️ 찜하기 버튼
         <button
-          onClick={handleLike}
+          onClick={() => handleLike(place)}
           className="mt-2 px-3 py-1 bg-yellow-400 text-white text-sm rounded hover:bg-yellow-500 transition"
         >
           ❤️ 찜하기
