@@ -26,7 +26,7 @@ function MainPage() {
           places.map((place) => <PlaceCard key={place.id} place={place} />)
         ) : (
           <p className="text-gray-500 col-span-full text-center">
-            불러올 맛집이 없습니다.
+            불러올 맛집이 없습니다. 😢
           </p>
         )}
       </div>

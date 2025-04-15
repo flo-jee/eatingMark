@@ -7,7 +7,8 @@ function PlaceCard({ place, onDelete }) {
       alert("찜 완료!");
       localStorage.setItem("latestLiked", JSON.stringify(place));
     } catch (err) {
-      console.error("찜하기 실패:", err);
+      console.error("🔥 서버 요청 실패:", err);
+      alert("서버와의 연결에 문제가 생겼어요. 😢");
     }
   };
 

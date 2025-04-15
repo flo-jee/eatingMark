@@ -5,7 +5,7 @@ import PlaceCard from "../components/PlaceCard";
 function MyPlacePage() {
   const [myPlaces, setMyPlaces] = useState([]);
 
-  // 찜한 맛집 불러오기
+  // 🧲 찜한 맛집 불러오기
   useEffect(() => {
     const fetchMyPlaces = async () => {
       try {
@@ -18,7 +18,7 @@ function MyPlacePage() {
           const local = localStorage.getItem("latestLiked");
           if (local) {
             const parsed = JSON.parse(local);
-            if (parsed && parsed.id) {
+            if (parsed?.id) {
               setMyPlaces([parsed]);
             }
           }
@@ -27,11 +27,12 @@ function MyPlacePage() {
         }
       } catch (err) {
         console.error("🔥 서버 응답 실패:", err);
+        alert("서버 연결에 문제가 발생했어요. 😢");
 
         const local = localStorage.getItem("latestLiked");
         if (local) {
           const parsed = JSON.parse(local);
-          if (parsed && parsed.id) {
+          if (parsed?.id) {
             setMyPlaces([parsed]);
           }
         }
@@ -41,14 +42,14 @@ function MyPlacePage() {
     fetchMyPlaces();
   }, []);
 
-  // 삭제 처리
+  // 🗑️ 삭제 처리
   const handleDelete = async (id) => {
     try {
       await deletePlace(id);
       alert("삭제 완료!");
 
       setMyPlaces((prev) => {
-        const updated = prev.filter((place) => place && place.id !== id);
+        const updated = prev.filter((place) => place?.id !== id);
 
         const local = localStorage.getItem("latestLiked");
         if (local) {
@@ -62,6 +63,7 @@ function MyPlacePage() {
       });
     } catch (err) {
       console.error("❌ 삭제 실패:", err);
+      alert("삭제 중 오류가 발생했습니다.");
     }
   };
 
