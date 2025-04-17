@@ -3,12 +3,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 function SkeletonCard() {
   return (
-    <div className="bg-white shadow p-4 rounded text-center">
-      <Skeleton height={120} className="mb-2 rounded" />
-      <Skeleton height={20} width={`60%`} className="mx-auto mb-2 rounded" />
-      <Skeleton height={16} width={`80%`} className="mx-auto mb-1 rounded" />
-      <Skeleton height={16} width={`70%`} className="mx-auto mb-4 rounded" />
-      <Skeleton height={30} width={90} className="mx-auto rounded" />
+    <div className="bg-pink-50 dark:bg-neutral-800 aspect-square shadow-md rounded-xl overflow-hidden animate-pulse">
+      <Skeleton
+        height="100%"
+        borderRadius={0}
+        baseColor="#fcd6e0"
+        highlightColor="#ffeef3"
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 }

@@ -1,15 +1,25 @@
-import { likePlace, getMyPlaces } from "../api/placeApi";
+import { likePlace, deletePlace, getMyPlaces } from "../api/placeApi";
 
-// 찜하기 로직만 따로 분리한 훅
-export const useLikePlace = (setPlaces) => {
-  const handleLike = async (place) => {
+export const useLikePlace = (setPlaces, isMyPage = false) => {
+  const handleLike = async (place, isLiked) => {
+    if (!place?.id) return;
+
     try {
-      console.log("📦 likePlace로 보낼 데이터:", place);
-      await likePlace(place);
-      alert("맛집을 찜했어요! 💖");
+      if (isLiked) {
+        await deletePlace(place.id);
+        alert("unLike!");
+      } else {
+        await likePlace(place);
+        alert("Like!");
+      }
+
+      if (isMyPage) {
+        const res = await getMyPlaces();
+        setPlaces(res.data?.places || []);
+      }
     } catch (error) {
-      console.error("찜 저장 실패:", error);
-      alert("찜하는 데 문제가 생겼어요. 😢");
+      console.error("찜 처리 실패:", error);
+      alert("목록 변경 중 오류가 발생했어요.");
     }
   };
 

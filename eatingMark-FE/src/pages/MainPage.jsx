@@ -1,13 +1,17 @@
 import { usePlaces } from "../hooks/usePlaces";
+import { useMyPlaces } from "../hooks/useMyPlaces"; // 추가
+import { useLikePlace } from "../hooks/useLikePlace";
 import PlaceCard from "../components/PlaceCard";
 import SkeletonCard from "../components/SkeletonCard";
 import { Helmet } from "react-helmet-async";
 
 function MainPage() {
   const { places, loading, error, setPlaces } = usePlaces();
+  const { myPlaces: likedPlaces } = useMyPlaces(); // 재사용
+  const { handleLike } = useLikePlace(setPlaces);
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-6">
+    <main className="max-w-6xl mx-auto px-4 py-8">
       <Helmet>
         <title>전체 맛집 리스트 | eatingMark</title>
         <meta
@@ -23,24 +27,35 @@ function MainPage() {
           property="og:description"
           content="전국 맛집을 한눈에 보고 찜할 수 있는 서비스, eatingMark!"
         />
-        <meta property="og:image" content="/og-image.jpg" />
-        <meta property="og:url" content="https://your-domain.com" />
+        <meta property="og:image" content="/eatingMark.png" />
+        <meta property="og:url" content="https://eatingmark.vercel.app" />
       </Helmet>
-      <h4 className="text-xl font-semibold mb-6">🍽 전체 맛집 리스트</h4>
+
       {error ? (
         <p className="text-red-500 text-center">{error}</p>
       ) : loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
           {places.length > 0 ? (
-            places.map((place) => (
-              <PlaceCard key={place.id} place={place} setPlaces={setPlaces} />
-            ))
+            places.map((place) => {
+              const isLiked = likedPlaces.some(
+                (liked) => liked.id === place.id,
+              );
+              return (
+                <PlaceCard
+                  key={place.id}
+                  place={place}
+                  setPlaces={setPlaces}
+                  isLiked={isLiked}
+                  handleLike={handleLike}
+                />
+              );
+            })
           ) : (
             <p className="text-gray-500 col-span-full text-center">
               불러올 맛집이 없습니다. 😢
