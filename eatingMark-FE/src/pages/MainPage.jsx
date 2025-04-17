@@ -28,7 +28,7 @@ function MainPage() {
           content="전국 맛집을 한눈에 보고 찜할 수 있는 서비스, eatingMark!"
         />
         <meta property="og:image" content="/eatingMark.png" />
-        <meta property="og:url" content="https://eatingmark.vercel.app" />
+        <meta property="og:url" content="https://eating-mark.vercel.app/" />
       </Helmet>
 
       {error ? (
